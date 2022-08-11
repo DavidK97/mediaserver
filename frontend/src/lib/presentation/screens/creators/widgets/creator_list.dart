@@ -19,28 +19,28 @@ class CreatorList extends StatelessWidget {
               .where((element) => element.startsWith(input))
               .take(40)
               .toList();
-          return Padding(
-            padding: const EdgeInsets.all(15.0),
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Creators'),
                 SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Wrap(
-                    children: filteredCreators
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsets.only(right: 4.0),
-                            child: InputChip(
-                              avatar: const Icon(Icons.remove),
-                              label: Text(e),
-                              onSelected: (val) => onDeleteCreator.call(e),
-                            ),
-                          ),
+                  child: (filteredCreators.isNotEmpty)
+                      ? Wrap(
+                          runSpacing: 0.0,
+                          spacing: 4,
+                          children: filteredCreators
+                              .map(
+                                (e) => InputChip(
+                                  avatar: const Icon(Icons.remove),
+                                  label: Text(e),
+                                  onSelected: (val) => onDeleteCreator.call(e),
+                                ),
+                              )
+                              .toList(),
                         )
-                        .toList(),
-                  ),
+                      : const Text('keine Creators gefunden'),
                 ),
               ],
             ),

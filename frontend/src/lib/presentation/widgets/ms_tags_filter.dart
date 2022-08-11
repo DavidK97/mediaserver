@@ -46,38 +46,43 @@ class _MSTagsFilterState extends State<MSTagsFilter> {
               const Text('Auswahl'),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: selectedTags
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InputChip(
-                            avatar: const Icon(Icons.remove),
-                            label: Text(e),
-                            onSelected: (val) => widget.onRemoveTag.call(e),
-                          ),
-                        ),
+                child: (selectedTags.isNotEmpty)
+                    ? Row(
+                        children: selectedTags
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: InputChip(
+                                  avatar: const Icon(Icons.remove),
+                                  label: Text(e),
+                                  onSelected: (val) =>
+                                      widget.onRemoveTag.call(e),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : const Text('-'),
               ),
               const Text('Vorschläge'),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: filteredTags
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InputChip(
-                            avatar: const Icon(Icons.add),
-                            label: Text(e),
-                            onSelected: (val) => widget.onAddTag.call(e),
-                          ),
-                        ),
+                child: (filteredTags.isNotEmpty)
+                    ? Row(
+                        children: filteredTags
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: InputChip(
+                                  avatar: const Icon(Icons.add),
+                                  label: Text(e),
+                                  onSelected: (val) => widget.onAddTag.call(e),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : const Text('-'),
               ),
             ],
           );

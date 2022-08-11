@@ -8,9 +8,13 @@ part 'manage_media_state.dart';
 class ManageMediaBloc extends Bloc<ManageMediaEvent, ManageMediaState> {
   final MediaRepository mediaRepository;
   final AlbumRepository albumRepository;
+  final CreatorRepository creatorRepository;
 
-  ManageMediaBloc(this.mediaRepository, this.albumRepository)
-      : super(ManageMediaInitial()) {
+  ManageMediaBloc({
+    required this.mediaRepository,
+    required this.albumRepository,
+    required this.creatorRepository,
+  }) : super(ManageMediaInitial()) {
     on<RemoveMedia>((event, emit) async {
       emit(UpdatingMedia());
       Response r = await mediaRepository.removeMedia(event.id);
@@ -41,6 +45,18 @@ class ManageMediaBloc extends Bloc<ManageMediaEvent, ManageMediaState> {
       emit(UpdatingMedia());
       Response r =
           await albumRepository.removeMediaFromAlbum(event.id, event.album);
+      emit(MediaUpdated(r));
+    });
+    on<AddCreatorToMedia>((event, emit) async {
+      emit(UpdatingMedia());
+      Response r =
+          await creatorRepository.addCreatorToMedia(event.id, event.creator);
+      emit(MediaUpdated(r));
+    });
+    on<RemoveCreatorFromMedia>((event, emit) async {
+      emit(UpdatingMedia());
+      Response r = await creatorRepository.removeCreatorFromMedia(
+          event.id, event.creator);
       emit(MediaUpdated(r));
     });
   }

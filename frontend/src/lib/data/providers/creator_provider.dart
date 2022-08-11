@@ -15,7 +15,7 @@ class CreatorProvider {
       if (creatorCache.isNotEmpty) yield creatorCache;
       final response = await http.get(Uri.parse(MSUrls.allCreators));
       final List<String> json = List<String>.from(jsonDecode(response.body));
-      if (!listEquals(creatorCache, json)) {
+      if (creatorCache.isEmpty || !listEquals(creatorCache, json)) {
         yield json;
         creatorCache = json;
       }
@@ -90,6 +90,34 @@ class CreatorProvider {
         });
         creatorCache.remove(oldName);
         creatorCache.add(name);
+        return Response(success: true);
+      }
+      return Response(success: false);
+    } catch (error) {
+      return Response(success: false);
+    }
+  }
+
+  Future<Response> addCreatorToMedia(int id, String creator) async {
+    try {
+      final response = await http.post(Uri.parse(MSUrls.addCreatorToMedia),
+          headers: MSConstants.defaultJsonRequestHeader,
+          body: Request(id: id, name: creator).toJson());
+      if (StatusCodes.requestOK.contains(response.statusCode)) {
+        return Response(success: true);
+      }
+      return Response(success: false);
+    } catch (error) {
+      return Response(success: false);
+    }
+  }
+
+  Future<Response> removeCreatorFromMedia(int id, String creator) async {
+    try {
+      final response = await http.post(Uri.parse(MSUrls.removeCreatorFromMedia),
+          headers: MSConstants.defaultJsonRequestHeader,
+          body: Request(id: id, name: creator).toJson());
+      if (StatusCodes.requestOK.contains(response.statusCode)) {
         return Response(success: true);
       }
       return Response(success: false);

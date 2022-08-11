@@ -45,38 +45,44 @@ class _MSAlbumsFilterState extends State<MSAlbumsFilter> {
               const Text('Auswahl'),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: selectedAlbums
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InputChip(
-                            avatar: const Icon(Icons.remove),
-                            label: Text(e),
-                            onSelected: (val) => widget.onRemoveAlbum.call(e),
-                          ),
-                        ),
+                child: (selectedAlbums.isNotEmpty)
+                    ? Row(
+                        children: selectedAlbums
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: InputChip(
+                                  avatar: const Icon(Icons.remove),
+                                  label: Text(e),
+                                  onSelected: (val) =>
+                                      widget.onRemoveAlbum.call(e),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : const Text('-'),
               ),
               const Text('Vorschläge'),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: filteredAlbums
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InputChip(
-                            avatar: const Icon(Icons.add),
-                            label: Text(e),
-                            onSelected: (val) => widget.onAddAlbum.call(e),
-                          ),
-                        ),
+                child: (filteredAlbums.isNotEmpty)
+                    ? Row(
+                        children: filteredAlbums
+                            .map(
+                              (e) => Padding(
+                                padding: const EdgeInsets.only(right: 4.0),
+                                child: InputChip(
+                                  avatar: const Icon(Icons.add),
+                                  label: Text(e),
+                                  onSelected: (val) =>
+                                      widget.onAddAlbum.call(e),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       )
-                      .toList(),
-                ),
+                    : const Text('-'),
               ),
             ],
           );

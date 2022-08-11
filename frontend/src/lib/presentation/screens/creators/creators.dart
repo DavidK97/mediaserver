@@ -13,37 +13,46 @@ class CreatorsScreen extends StatefulWidget {
 
 class _CreatorsScreenState extends State<CreatorsScreen> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                hintText: 'Creator...',
+                prefixIcon: const Icon(Icons.person),
+                contentPadding: const EdgeInsets.all(0),
+              ),
+              controller: _controller,
+              focusNode: _focus,
+              onChanged: (val) => setState(() {}),
+              onSubmitted: (val) {
+                BlocProvider.of<CreatorBloc>(context).add(AddCreator(val));
+                _focus.requestFocus();
+              },
             ),
-            hintText: 'Tag...',
-            prefixIcon: const Icon(Icons.tag),
-            contentPadding: const EdgeInsets.all(0),
-          ),
-          controller: _controller,
-          onChanged: (val) => setState(() {}),
-          onSubmitted: (val) =>
-              BlocProvider.of<CreatorBloc>(context).add(AddCreator(val)),
+            const SizedBox(
+              height: 10,
+            ),
+            CreatorList(
+              _controller.text,
+              onDeleteCreator: (creator) => _showAction(
+                  context,
+                  "Creator '$creator' entfernen?",
+                  () => BlocProvider.of<CreatorBloc>(context)
+                      .add(RemoveCreator(creator))),
+            ),
+          ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
-        CreatorList(
-          _controller.text,
-          onDeleteCreator: (creator) => _showAction(
-              context,
-              "Creator '$creator' entfernen?",
-              () => BlocProvider.of<CreatorBloc>(context)
-                  .add(RemoveCreator(creator))),
-        ),
-      ],
+      ),
     );
   }
 

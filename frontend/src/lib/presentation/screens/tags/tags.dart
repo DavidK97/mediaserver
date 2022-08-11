@@ -13,6 +13,7 @@ class TagsScreen extends StatefulWidget {
 
 class _TagsScreenState extends State<TagsScreen> {
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +32,12 @@ class _TagsScreenState extends State<TagsScreen> {
                 contentPadding: const EdgeInsets.all(0),
               ),
               controller: _controller,
+              focusNode: _focus,
               onChanged: (val) => setState(() {}),
-              onSubmitted: (val) =>
-                  BlocProvider.of<TagBloc>(context).add(AddTag(val)),
+              onSubmitted: (val) {
+                BlocProvider.of<TagBloc>(context).add(AddTag(val));
+                _focus.requestFocus();
+              },
             ),
             const SizedBox(
               height: 15,

@@ -19,29 +19,31 @@ class TagList extends StatelessWidget {
               .where((element) => element.startsWith(input))
               .take(40)
               .toList();
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Tags'),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Wrap(
-                  runSpacing: 10.0,
-                  children: filteredTags
-                      .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.only(right: 4.0),
-                          child: InputChip(
-                            avatar: const Icon(Icons.remove),
-                            label: Text(e),
-                            onSelected: (val) => onDeleteTag.call(e),
-                          ),
-                        ),
-                      )
-                      .toList(),
+          return SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: filteredTags.isNotEmpty
+                      ? Wrap(
+                          runSpacing: 0.0,
+                          spacing: 4.0,
+                          children: filteredTags
+                              .map(
+                                (e) => InputChip(
+                                  avatar: const Icon(Icons.remove),
+                                  label: Text(e),
+                                  onSelected: (val) => onDeleteTag.call(e),
+                                ),
+                              )
+                              .toList(),
+                        )
+                      : const Text('keine Tags gefunden'),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else {
           return const Center(

@@ -50,8 +50,11 @@ class RouteGenerator {
                     BlocProvider(create: (_) => MenuCubit()),
                     BlocProvider(create: (_) => MediaBloc(_mediaRepository)),
                     BlocProvider(
-                        create: (_) =>
-                            ManageMediaBloc(_mediaRepository, _albumRepository))
+                        create: (_) => ManageMediaBloc(
+                              mediaRepository: _mediaRepository,
+                              albumRepository: _albumRepository,
+                              creatorRepository: _creatorRepository,
+                            ))
                   ],
                   child: MediaPage(
                       media: args[0] as List<Media>,

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\dklot\\workspace\\local\\flutter\\mediaserver\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\dklot\\workspace\\github\\mediaserver\\frontend\\src\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
                     "source": "C:\\Users\\dklot\\.gradle\\caches\\transforms-3\\8a5514d4341f323606d890e29d4268b9\\transformed\\lifecycle-runtime-2.3.1\\res\\values\\values.xml",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\dklot\\workspace\\local\\flutter\\mediaserver\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\dklot\\workspace\\github\\mediaserver\\frontend\\src\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

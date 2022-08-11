@@ -31,6 +31,9 @@ class MSUrls {
   static const String addMediaToAlbum = "$media/albums/add";
   static const String removeMediaFromAlbum = "$media/albums/remove";
 
+  static const String addCreatorToMedia = "$media/creators/add";
+  static const String removeCreatorFromMedia = "$media/creators/remove";
+
   static String mediaFile(int id) => "$media/file/$id";
   static String mediaThumb(int id) => "$media/thumb/$id";
 

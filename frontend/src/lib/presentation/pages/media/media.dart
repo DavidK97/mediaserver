@@ -38,104 +38,115 @@ class _MediaPageState extends State<MediaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MenuCubit, bool>(
-      listener: (context, state) {
-        if (state) {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-        } else {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    return WillPopScope(
+      onWillPop: () {
+        if (_showInfo) {
+          setState(() {
+            _showInfo = false;
+          });
+          return Future.value(false);
         }
+        return Future.value(true);
       },
-      child: Scaffold(
-        body: GestureDetector(
-          onTap: (() => BlocProvider.of<MenuCubit>(context).toggleMenu()),
-          child: Container(
-            color: Colors.black,
-            child: Stack(
-              children: [
-                PageView.builder(
-                  itemCount: widget.media.length,
-                  pageSnapping: true,
-                  controller: _pageController,
-                  onPageChanged: (page) {
-                    setState(() {
-                      _selectedIndex = page;
-                      BlocProvider.of<MediaBloc>(context)
-                          .add(FetchMedia(widget.media[_selectedIndex].id));
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    return Center(
-                      child: (widget.media[index].type == 'Video')
-                          ? MSVideoPlayer(
-                              url: MSUrls.mediaFile(widget.media[index].id))
-                          : Image.network(
-                              MSUrls.mediaFile(widget.media[index].id),
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
-                            ),
-                    );
-                  },
-                ),
-                BlocBuilder<MediaBloc, MediaState>(
-                  builder: (context, state) {
-                    return MSMenuOverlay(
-                      onEditPressed: () => setState(() {
-                        _showInfo = !_showInfo;
-                      }),
-                      onFavoritePressed: () => setState(
-                        () {
-                          if (state is MediaLoadedState) {
-                            state.media.favorite = !state.media.favorite;
-                            BlocProvider.of<ManageMediaBloc>(context)
-                                .add(UpdateMedia(state.media));
-                          }
-                        },
-                      ),
-                      onDeletePressed: () => setState(
-                        () {
-                          if (state is MediaLoadedState) {
-                            BlocProvider.of<ManageMediaBloc>(context)
-                                .add(RemoveMedia(state.media.id));
-                          }
-                        },
-                      ),
-                      isFavorite: (state is MediaLoadedState)
-                          ? state.media.favorite
-                          : false,
-                    );
-                  },
-                ),
-                Visibility(
-                  visible: _showInfo,
-                  child: BlocBuilder<MediaBloc, MediaState>(
-                    builder: (context, state) {
-                      if (state is MediaLoadedState) {
-                        return MSEditMediaDialog(state.media,
-                            onClosePressed: () {
-                          setState(() {
-                            _showInfo = !_showInfo;
-                          });
-                        });
-                      } else {
-                        return Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height,
-                          color: Colors.black.withOpacity(0.5),
-                          child:
-                              const Center(child: CircularProgressIndicator()),
-                        );
-                      }
+      child: BlocListener<MenuCubit, bool>(
+        listener: (context, state) {
+          if (state) {
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+          } else {
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+          }
+        },
+        child: Scaffold(
+          body: GestureDetector(
+            onTap: (() => BlocProvider.of<MenuCubit>(context).toggleMenu()),
+            child: Container(
+              color: Colors.black,
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    itemCount: widget.media.length,
+                    pageSnapping: true,
+                    controller: _pageController,
+                    onPageChanged: (page) {
+                      setState(() {
+                        _selectedIndex = page;
+                        BlocProvider.of<MediaBloc>(context)
+                            .add(FetchMedia(widget.media[_selectedIndex].id));
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return Center(
+                        child: (widget.media[index].type == 'Video')
+                            ? MSVideoPlayer(
+                                url: MSUrls.mediaFile(widget.media[index].id))
+                            : Image.network(
+                                MSUrls.mediaFile(widget.media[index].id),
+                                loadingBuilder: (BuildContext context,
+                                    Widget child,
+                                    ImageChunkEvent? loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
+                      );
                     },
                   ),
-                )
-              ],
+                  BlocBuilder<MediaBloc, MediaState>(
+                    builder: (context, state) {
+                      return MSMenuOverlay(
+                        onEditPressed: () => setState(() {
+                          _showInfo = !_showInfo;
+                        }),
+                        onFavoritePressed: () => setState(
+                          () {
+                            if (state is MediaLoadedState) {
+                              state.media.favorite = !state.media.favorite;
+                              BlocProvider.of<ManageMediaBloc>(context)
+                                  .add(UpdateMedia(state.media));
+                            }
+                          },
+                        ),
+                        onDeletePressed: () => setState(
+                          () {
+                            if (state is MediaLoadedState) {
+                              BlocProvider.of<ManageMediaBloc>(context)
+                                  .add(RemoveMedia(state.media.id));
+                            }
+                          },
+                        ),
+                        isFavorite: (state is MediaLoadedState)
+                            ? state.media.favorite
+                            : false,
+                      );
+                    },
+                  ),
+                  Visibility(
+                    visible: _showInfo,
+                    child: BlocBuilder<MediaBloc, MediaState>(
+                      builder: (context, state) {
+                        if (state is MediaLoadedState) {
+                          return MSEditMediaDialog(state.media,
+                              onClosePressed: () {
+                            setState(() {
+                              _showInfo = !_showInfo;
+                            });
+                          });
+                        } else {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            color: Colors.black.withOpacity(0.5),
+                            child: const Center(
+                                child: CircularProgressIndicator()),
+                          );
+                        }
+                      },
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

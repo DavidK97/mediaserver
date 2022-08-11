@@ -17,7 +17,7 @@ class AlbumProvider {
       if (albumCache.isNotEmpty) yield albumCache;
       final response = await http.get(Uri.parse(MSUrls.allAlbums));
       final List<String> json = List<String>.from(jsonDecode(response.body));
-      if (!listEquals(albumCache, json)) {
+      if (albumCache.isEmpty || !listEquals(albumCache, json)) {
         yield json;
         albumCache = json;
       }

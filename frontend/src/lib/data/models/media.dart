@@ -7,8 +7,8 @@ class Media {
   String name;
   String thumbnail;
   String type;
-  String creator;
   bool favorite;
+  List<String> creators;
   List<String> tags;
   List<String> albums;
 
@@ -17,7 +17,7 @@ class Media {
       required this.name,
       required this.thumbnail,
       required this.type,
-      required this.creator,
+      required this.creators,
       required this.favorite,
       required this.tags,
       required this.albums});
@@ -28,8 +28,10 @@ class Media {
       name: json["name"] ?? "",
       thumbnail: json["thumbnail"] ?? "",
       type: json["type"],
-      creator: json["creator"] ?? "",
       favorite: json["favorite"] ?? false,
+      creators: ((json["creators"] ?? []) as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
       tags: ((json["tags"] ?? []) as List<dynamic>)
           .map((e) => e as String)
           .toList(),
@@ -45,7 +47,6 @@ class Media {
       "name": name,
       "thumbnail": thumbnail,
       "type": type,
-      "creator": creator,
       "favorite": favorite
     });
   }
@@ -56,8 +57,8 @@ class Media {
       name: "",
       thumbnail: "",
       type: "",
-      creator: "",
       favorite: false,
+      creators: [],
       tags: [],
       albums: [],
     );
@@ -68,8 +69,8 @@ class Media {
         name == newMedia.name &&
         thumbnail == newMedia.thumbnail &&
         type == newMedia.type &&
-        creator == newMedia.creator &&
         favorite == newMedia.favorite &&
+        listEquals(creators, newMedia.creators) &&
         listEquals(tags, newMedia.tags) &&
         listEquals(albums, newMedia.albums));
   }

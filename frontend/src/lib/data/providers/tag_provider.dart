@@ -14,7 +14,7 @@ class TagProvider {
 
       final response = await http.get(Uri.parse(MSUrls.allTags));
       final List<String> json = List<String>.from(jsonDecode(response.body));
-      if (!listEquals(tagCache, json)) {
+      if (tagCache.isEmpty || !listEquals(tagCache, json)) {
         yield json;
         tagCache = json;
       }

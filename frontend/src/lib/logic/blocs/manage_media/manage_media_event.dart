@@ -59,3 +59,23 @@ class RemoveMediaFromAlbum extends ManageMediaEvent {
   @override
   List<Object?> get props => [id, album];
 }
+
+class AddCreatorToMedia extends ManageMediaEvent {
+  final int id;
+  final String creator;
+
+  AddCreatorToMedia(this.id, this.creator);
+
+  @override
+  List<Object?> get props => [id, creator];
+}
+
+class RemoveCreatorFromMedia extends ManageMediaEvent {
+  final int id;
+  final String creator;
+
+  RemoveCreatorFromMedia(this.id, this.creator);
+
+  @override
+  List<Object?> get props => [id, creator];
+}

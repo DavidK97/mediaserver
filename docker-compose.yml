@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:14.4
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mediaserver
+    ports:
+      - 5432:5432
+    volumes:
+      - ./backend/postgres/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql

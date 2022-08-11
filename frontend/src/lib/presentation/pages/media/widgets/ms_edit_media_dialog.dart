@@ -24,6 +24,7 @@ class _MSEditMediaDialogState extends State<MSEditMediaDialog> {
   final List<String> selectedALbums = List.empty();
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _albumController = TextEditingController();
+  final TextEditingController _creatorController = TextEditingController();
 
   @override
   void initState() {
@@ -42,8 +43,7 @@ class _MSEditMediaDialogState extends State<MSEditMediaDialog> {
         child: Center(
           child: SingleChildScrollView(
             child: Container(
-                height: MediaQuery.of(context).size.height * 0.6,
-                width: MediaQuery.of(context).size.width * 0.9,
+                width: MediaQuery.of(context).size.width * 0.85,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.grey.shade800),
@@ -114,43 +114,38 @@ class _MSEditMediaDialogState extends State<MSEditMediaDialog> {
                             const SizedBox(
                               height: 10,
                             ),
+                            TextField(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                hintText: 'Filter Creators...',
+                                prefixIcon: const Icon(Icons.search),
+                                contentPadding: const EdgeInsets.all(0),
+                              ),
+                              controller: _creatorController,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             BlocProvider(
                               create: (context) =>
                                   CreatorBloc(CreatorRepository()),
-                              child: BlocBuilder<CreatorBloc, CreatorState>(
-                                builder: (context, state) {
-                                  if (state is CreatorsLoaded) {
-                                    return DropdownButton<String>(
-                                      value: widget.media.creator,
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_down),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          widget.media.creator =
-                                              value ?? widget.media.creator;
-                                          BlocProvider.of<ManageMediaBloc>(
-                                                  context)
-                                              .add(UpdateMedia(widget.media));
-                                        });
-                                      },
-                                      items: state.creators
-                                          .map(
-                                            (e) => DropdownMenuItem<String>(
-                                              value: e,
-                                              child: Text(e),
-                                            ),
-                                          )
-                                          .toList(),
-                                    );
-                                  } else {
-                                    context
-                                        .read<CreatorBloc>()
-                                        .add(FetchCreators());
-                                    return const Center(
-                                      child: CircularProgressIndicator(),
-                                    );
-                                  }
-                                },
+                              child: MSCreatorsFilter(
+                                _creatorController.text,
+                                onAddCreator: (creator) => setState(() {
+                                  BlocProvider.of<ManageMediaBloc>(context).add(
+                                      AddCreatorToMedia(
+                                          widget.media.id, creator));
+                                  widget.media.creators.add(creator);
+                                }),
+                                onRemoveCreator: (creator) => setState(() {
+                                  BlocProvider.of<ManageMediaBloc>(context).add(
+                                      RemoveCreatorFromMedia(
+                                          widget.media.id, creator));
+                                  widget.media.creators.remove(creator);
+                                }),
+                                selectedCreators: widget.media.creators,
                               ),
                             ),
                             const SizedBox(

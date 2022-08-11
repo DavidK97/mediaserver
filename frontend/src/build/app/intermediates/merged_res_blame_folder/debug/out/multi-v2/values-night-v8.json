@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\dklot\\workspace\\local\\flutter\\mediaserver\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "C:\\Users\\dklot\\workspace\\github\\mediaserver\\frontend\\src\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\dklot\\workspace\\local\\flutter\\mediaserver\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\dklot\\workspace\\github\\mediaserver\\frontend\\src\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
