@@ -1,4 +1,0 @@
-#Thu Aug 11 14:53:28 CEST 2022
-base.0=C\:\\Users\\dklot\\workspace\\github\\mediaserver\\frontend\\src\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
