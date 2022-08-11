@@ -17,10 +17,13 @@ func createFilterQuery(filters Filters) string {
 	query := []string{"SELECT", "m.id", ",", "m.type", "FROM", "media", "m"}
 
 	if len(filters.Albums) > 0 {
-		query = append(query, ",media_to_album", "ma")
+		query = append(query, ",media_of_album", "ma")
 	}
 	if len(filters.Tags) > 0 {
-		query = append(query, ",media_to_tags", "mt")
+		query = append(query, ",media_of_tag", "mt")
+	}
+	if len(filters.Creators) > 0 {
+		query = append(query, ",media_of_creator", "mc")
 	}
 
 	query = append(query, "WHERE")
@@ -40,7 +43,8 @@ func createFilterQuery(filters Filters) string {
 		if len(filters.Albums) > 0 || len(filters.Tags) > 0 {
 			query = append(query, "AND")
 		}
-		query = append(query, "m.creator", "IN", generateInQueryItem(filters.Creators))
+		query = append(query, "mc.creator", "IN", generateInQueryItem(filters.Creators))
+		query = append(query, "AND", "mc.media_id=m.id")
 	}
 	if filters.Favorite {
 		if len(filters.Albums) > 0 || len(filters.Tags) > 0 || len(filters.Creators) > 0 {
@@ -49,13 +53,30 @@ func createFilterQuery(filters Filters) string {
 		query = append(query, "m.favorite=TRUE")
 	}
 	query = append(query, "GROUP", "BY", "m.id")
-	if len(filters.Tags) > 0 && len(filters.Albums) > 0 {
-		query = append(query, "HAVING", "COUNT(m.id)=", strconv.Itoa(len(filters.Tags)*len(filters.Albums)))
-	} else if len(filters.Tags) > 0 {
-		query = append(query, "HAVING", "COUNT(m.id)=", strconv.Itoa(len(filters.Tags)))
-	} else if len(filters.Albums) > 0 {
-		query = append(query, "HAVING", "COUNT(m.id)=", strconv.Itoa(len(filters.Albums)))
+
+	count := 0
+	if len(filters.Tags) > 0 {
+		count = len(filters.Tags)
 	}
+	if len(filters.Albums) > 0 {
+		if count > 0 {
+			count *= len(filters.Albums)
+		} else {
+			count = len(filters.Albums)
+		}
+	}
+	if len(filters.Creators) > 0 {
+		if count > 0 {
+			count *= len(filters.Creators)
+		} else {
+			count = len(filters.Creators)
+		}
+	}
+
+	if count > 0 {
+		query = append(query, "HAVING", "COUNT(m.id)=", strconv.Itoa(count))
+	}
+
 	return strings.Join(query, " ")
 }
 

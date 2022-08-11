@@ -28,7 +28,7 @@ var gif = ".gif"
 
 func (api *API) Synchronize(w http.ResponseWriter, r *http.Request) {
 	log.Println("Synchronization started...")
-	files, err := ioutil.ReadDir("D:/Input")
+	files, err := ioutil.ReadDir(os.Getenv("APP_INPUT_FOLDER"))
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Directory could not been read")
 		return
@@ -54,7 +54,7 @@ func (api *API) Synchronize(w http.ResponseWriter, r *http.Request) {
 		var filename = generateUniqueFilename("FILE_", suffix, index)
 		var thumbnail = generateUniqueFilename("THUMB_", thumbSuffix, index)
 
-		var path = filepath.Join("D:", "Server", mime)
+		var path = filepath.Join(os.Getenv("APP_OUTPUT_FOLDER"), mime)
 		var pathToFile = filepath.Join(path, filename)
 		var pathToThumb = filepath.Join(path, ".thumbnails", thumbnail)
 
@@ -65,7 +65,7 @@ func (api *API) Synchronize(w http.ResponseWriter, r *http.Request) {
 			thumb = thumbnail
 		}
 
-		var v m.MediaForInsert = m.MediaForInsert{Name: filename, Thumbnail: thumb, Type: mime, Creator: "Unknown", Favorite: false}
+		var v m.MediaForInsert = m.MediaForInsert{Name: filename, Thumbnail: thumb, Type: mime, Favorite: false}
 		log.Println("Saving file to DB...")
 		if err := db.CreateMedia(v, api.DB); err != nil {
 			respondWithError(w, http.StatusBadRequest, err.Error())
@@ -73,7 +73,7 @@ func (api *API) Synchronize(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Println("File saved to DB.")
 		log.Println("Moving file to " + pathToFile)
-		if err := os.Rename(filepath.Join("D:", "Input", file.Name()), pathToFile); err != nil {
+		if err := os.Rename(filepath.Join(os.Getenv("APP_INPUT_FOLDER"), file.Name()), pathToFile); err != nil {
 			respondWithError(w, http.StatusBadRequest, err.Error())
 			return
 		}

@@ -5,8 +5,8 @@ type Media struct {
 	Name      string   `json:"name"`
 	Thumbnail string   `json:"thumbnail"`
 	Type      string   `json:"type"`
-	Creator   string   `json:"creator"`
 	Favorite  bool     `json:"favorite"`
+	Creators  []string `json:"creators"`
 	Tags      []string `json:"tags"`
 	Albums    []string `json:"albums"`
 }
@@ -15,7 +15,6 @@ type MediaForInsert struct {
 	Name      string `json:"name"`
 	Thumbnail string `json:"thumbnail"`
 	Type      string `json:"type"`
-	Creator   string `json:"creator"`
 	Favorite  bool   `json:"favorite"`
 }
 

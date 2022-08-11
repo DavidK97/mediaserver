@@ -13,8 +13,8 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->C:\Users\dklot\workspace\local\flutter\mediaserver\android\app\src\debug\AndroidManifest.xml:7:5-66
-15-->C:\Users\dklot\workspace\local\flutter\mediaserver\android\app\src\debug\AndroidManifest.xml:7:22-64
+15-->C:\Users\dklot\workspace\github\mediaserver\frontend\src\android\app\src\debug\AndroidManifest.xml:7:5-66
+15-->C:\Users\dklot\workspace\github\mediaserver\frontend\src\android\app\src\debug\AndroidManifest.xml:7:22-64
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 16-->[com.google.android.exoplayer:exoplayer-core:2.18.0] C:\Users\dklot\.gradle\caches\transforms-3\cd667b6def246546afb527c5d378442a\transformed\jetified-exoplayer-core-2.18.0\AndroidManifest.xml:24:5-79
 16-->[com.google.android.exoplayer:exoplayer-core:2.18.0] C:\Users\dklot\.gradle\caches\transforms-3\cd667b6def246546afb527c5d378442a\transformed\jetified-exoplayer-core-2.18.0\AndroidManifest.xml:24:22-76

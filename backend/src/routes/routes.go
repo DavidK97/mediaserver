@@ -60,6 +60,8 @@ func (r *Routes) initializeRoutes() {
 	r.Router.HandleFunc("/media/tags/remove", r.API.RemoveTagFromMedia).Methods("POST")
 	r.Router.HandleFunc("/media/albums/add", r.API.AddMediaToAlbum).Methods("POST")
 	r.Router.HandleFunc("/media/albums/remove", r.API.RemoveMediaFromAlbum).Methods("POST")
+	r.Router.HandleFunc("/media/creators/add", r.API.AddCreatorToMedia).Methods("POST")
+	r.Router.HandleFunc("/media/creators/remove", r.API.RemoveCreatorFromMedia).Methods("POST")
 	r.Router.HandleFunc("/media/add", r.API.CreateMedia).Methods("POST")
 	r.Router.HandleFunc("/media/remove", r.API.DeleteMedia).Methods("POST")
 

@@ -32,25 +32,25 @@ func AllOf(table string, db *sql.DB) ([]string, error) {
 func Delete(table, id string, db *sql.DB) error {
 	switch table {
 	case MEDIA:
-		if _, err := db.Exec("DELETE FROM media_to_tags WHERE media_id=$1", id); err != nil {
+		if _, err := db.Exec("DELETE FROM media_of_tag WHERE media_id=$1", id); err != nil {
 			return err
 		}
-		if _, err := db.Exec("DELETE FROM media_to_albums WHERE media_id=$1", id); err != nil {
+		if _, err := db.Exec("DELETE FROM media_of_album WHERE media_id=$1", id); err != nil {
 			return err
 		}
 		break
 	case TAG:
-		if _, err := db.Exec("DELETE FROM media_to_tags WHERE tag=$1", id); err != nil {
+		if _, err := db.Exec("DELETE FROM media_of_tag WHERE tag=$1", id); err != nil {
 			return err
 		}
 		break
 	case ALBUM:
-		if _, err := db.Exec("DELETE FROM media_to_albums WHERE album=$1", id); err != nil {
+		if _, err := db.Exec("DELETE FROM media_of_album WHERE album=$1", id); err != nil {
 			return err
 		}
 		break
 	case CREATOR:
-		if _, err := db.Exec("UPDATE media SET creator='Unknown' WHERE creator=$1", id); err != nil {
+		if _, err := db.Exec("DELETE FROM media_of_creator WHERE creator=$1", id); err != nil {
 			return err
 		}
 		break
@@ -74,17 +74,17 @@ func Update(table, name, oldName string, db *sql.DB) error {
 
 	switch table {
 	case TAG:
-		if _, err := db.Exec("UPDATE media_to_tags SET tag=$1 WHERE tag=$2", name, oldName); err != nil {
+		if _, err := db.Exec("UPDATE media_of_tag SET tag=$1 WHERE tag=$2", name, oldName); err != nil {
 			return err
 		}
 		break
 	case ALBUM:
-		if _, err := db.Exec("UPDATE media_to_albums SET album=$1 WHERE album=$2", name, oldName); err != nil {
+		if _, err := db.Exec("UPDATE media_of_album SET album=$1 WHERE album=$2", name, oldName); err != nil {
 			return err
 		}
 		break
 	case CREATOR:
-		if _, err := db.Exec("UPDATE media SET creator=$1 WHERE creator=$2", name, oldName); err != nil {
+		if _, err := db.Exec("UPDATE media_of_creator SET creator=$1 WHERE creator=$2", name, oldName); err != nil {
 			return err
 		}
 		break

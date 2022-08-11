@@ -225,6 +225,40 @@ func (api *API) RemoveMediaFromAlbum(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, map[string]string{"message": "success"})
 }
 
+func (api *API) AddCreatorToMedia(w http.ResponseWriter, r *http.Request) {
+	var request m.Request
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&request); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	if err := db.AddCreatorToMedia(request, api.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, map[string]string{"message": "success"})
+}
+
+func (api *API) RemoveCreatorFromMedia(w http.ResponseWriter, r *http.Request) {
+	var request m.Request
+	decoder := json.NewDecoder(r.Body)
+	if err := decoder.Decode(&request); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	defer r.Body.Close()
+
+	if err := db.RemoveCreatorFromMedia(request, api.DB); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	respondWithJSON(w, http.StatusOK, map[string]string{"message": "success"})
+}
+
 func (api *API) FilterMedia(w http.ResponseWriter, r *http.Request) {
 	var filter db.Filters
 	decoder := json.NewDecoder(r.Body)

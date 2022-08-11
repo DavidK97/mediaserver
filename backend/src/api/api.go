@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 
 	m "github.com/DavidK97/mediaserver/models"
@@ -17,14 +18,14 @@ type API struct {
 
 func PathToThumbnail(media m.Media) string {
 	if media.Type == m.ANIMATION {
-		return filepath.Join("D:", "Server", media.Type, media.Name)
+		return filepath.Join(os.Getenv("APP_OUTPUT_FOLDER"), media.Type, media.Name)
 	}
 
-	return filepath.Join("D:", "Server", media.Type, ".thumbnails", media.Thumbnail)
+	return filepath.Join(os.Getenv("APP_OUTPUT_FOLDER"), media.Type, ".thumbnails", media.Thumbnail)
 }
 
 func PathToFile(media m.Media) string {
-	return filepath.Join("D:", "Server", media.Type, media.Name)
+	return filepath.Join(os.Getenv("APP_OUTPUT_FOLDER"), media.Type, media.Name)
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
