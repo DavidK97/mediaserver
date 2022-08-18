@@ -55,6 +55,14 @@ func (api *API) Synchronize(w http.ResponseWriter, r *http.Request) {
 		var thumbnail = generateUniqueFilename("THUMB_", thumbSuffix, index)
 
 		var path = filepath.Join(os.Getenv("APP_OUTPUT_FOLDER"), mime)
+
+		err = os.MkdirAll(path, os.ModePerm)
+		err = os.MkdirAll(filepath.Join(path, ".thumbnails"), os.ModePerm)
+
+		if err != nil {
+			log.Fatalf("Error creating dirs")
+		}
+
 		var pathToFile = filepath.Join(path, filename)
 		var pathToThumb = filepath.Join(path, ".thumbnails", thumbnail)
 

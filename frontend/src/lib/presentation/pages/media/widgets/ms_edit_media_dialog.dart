@@ -21,7 +21,6 @@ class MSEditMediaDialog extends StatefulWidget {
 }
 
 class _MSEditMediaDialogState extends State<MSEditMediaDialog> {
-  final List<String> selectedALbums = List.empty();
   final TextEditingController _tagController = TextEditingController();
   final TextEditingController _albumController = TextEditingController();
   final TextEditingController _creatorController = TextEditingController();

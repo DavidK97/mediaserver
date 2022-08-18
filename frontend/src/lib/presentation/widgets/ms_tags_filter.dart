@@ -38,7 +38,7 @@ class _MSTagsFilterState extends State<MSTagsFilter> {
           List<String> filteredTags = state.tags
               .where((element) => element.startsWith(widget.input))
               .where((element) => !selectedTags.contains(element))
-              .take(10)
+              .take(20)
               .toList();
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

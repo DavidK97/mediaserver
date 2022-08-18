@@ -24,7 +24,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
               child: GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount:
-                        (MediaQuery.of(context).size.width / 150).round()),
+                        ((MediaQuery.of(context).size.width / 150).round() > 8)
+                            ? 8
+                            : (MediaQuery.of(context).size.width / 150)
+                                .round()),
                 itemCount: media.length,
                 itemBuilder: (context, i) {
                   return GestureDetector(
@@ -37,17 +40,17 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             const BorderRadius.all(Radius.circular(4.0)),
                         child: Stack(
                           children: [
-                            SizedBox(
-                              width: 150,
-                              height: 150,
+                            SizedBox.expand(
                               child: Image.network(
                                 MSUrls.mediaThumb(media[i].id),
                                 errorBuilder: (context, error, stackTrace) {
-                                  return Column(
-                                    children: const [
-                                      Icon(Icons.error_outline),
-                                      Text('Keine Vorschau gefunden'),
-                                    ],
+                                  return Center(
+                                    child: Column(
+                                      children: const [
+                                        Icon(Icons.error_outline),
+                                        Text('Keine Vorschau gefunden'),
+                                      ],
+                                    ),
                                   );
                                 },
                                 fit: BoxFit.cover,

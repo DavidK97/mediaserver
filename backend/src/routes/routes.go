@@ -25,6 +25,13 @@ func (routes *Routes) Initialize() {
 		log.Fatalf("Error loading .env file")
 	}
 
+	err = os.MkdirAll(os.Getenv("APP_INPUT_FOLDER"), os.ModePerm)
+	err = os.MkdirAll(os.Getenv("APP_OUTPUT_FOLDER"), os.ModePerm)
+
+	if err != nil {
+		log.Fatalf("Error creating dirs")
+	}
+
 	routes.API = api.Init(
 		os.Getenv("APP_DB_HOST"),
 		os.Getenv("APP_DB_PORT"),
